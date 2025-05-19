@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Répondre au sondage "{{ survey.title }}"{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>{{ survey.title }}</h2>
+            {% if survey.description %}
+            <p class="text-muted">{{ survey.description }}</p>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {% for question, form in question_forms %}
+                <div class="mb-4">
+                    <h4>{{ question.text }}</h4>
+                    {% if question.required %}
+                    <span class="text-danger">*</span>
+                    {% endif %}
+
+                    {% if question.question_type == 'text' %}
+                        {{ form.text_response }}
+                    {% elif question.question_type == 'scale' %}
+                        {{ form.scale_response }}
+                    {% elif question.question_type == 'single_choice' %}
+                        {{ form.choice_response }}
+                    {% elif question.question_type == 'multiple_choice' %}
+                        {% for choice_widget in form.choice_response %}
+                            <div class="form-check">
+                                {{ choice_widget.tag }} {# Renders the input tag with name and id #}
+                                <label class="form-check-label" for="{{ choice_widget.id_for_label }}">
+                                    {{ choice_widget.choice_label }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger mt-2">
+                        {{ form.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Soumettre</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

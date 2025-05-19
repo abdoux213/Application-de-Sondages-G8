@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ survey.title }}{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">{{ survey.title }}</h1>
+    <p class="lead mb-4">{{ survey.description }}</p>
+
+    <div class="mb-4">
+        {% if user.is_authenticated and user.username == 'abdo' %}
+            <a href="{% url 'survey_app:add_question' survey.id %}" class="btn btn-primary">Ajouter une question</a>
+        {% endif %}
+        <a href="{% url 'survey_app:take_survey' survey.id %}" class="btn btn-success">Répondre au sondage</a>
+        {% if user.is_authenticated and user.username == 'abdo' %}
+            <a href="{% url 'survey_app:survey_results' survey.id %}" class="btn btn-info">Voir les résultats</a>
+        {% endif %}
+        <a href="{% url 'home' %}" class="btn btn-secondary">Retour à l'accueil</a>
+    </div>
+
+    {% if questions %}
+        <h2 class="mb-3">Questions</h2>
+        <div class="list-group">
+            {% for question in questions %}
+                <div class="list-group-item">
+                    <h5 class="mb-1">{{ question.text }}</h5>
+                    <p class="mb-1">Type: {{ question.get_question_type_display }}</p>
+                    {% if question.choices.exists %}
+                        <div class="mt-2">
+                            <strong>Choix possibles:</strong>
+                            <ul class="list-unstyled">
+                                {% for choice in question.choices.all %}
+                                    <li>{{ choice.text }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Ce sondage n'a pas encore de questions. Cliquez sur "Ajouter une question" pour commencer.
+        </div>
+    {% endif %}
+{% endblock %}

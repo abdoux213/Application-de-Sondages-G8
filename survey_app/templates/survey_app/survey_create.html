@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Créer un sondage{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Créer un nouveau sondage</h1>
+    
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Créer le sondage</button>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+{% endblock %}

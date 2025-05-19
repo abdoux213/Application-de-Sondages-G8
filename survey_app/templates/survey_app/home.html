@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - Sondages{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Sondages disponibles</h1>
+    
+    {% if surveys %}
+        <div class="list-group">
+            {% for survey in surveys %}
+                <a href="{% url 'survey_app:survey_detail' survey.id %}" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">{{ survey.title }}</h5>
+                    <p class="mb-1">{{ survey.description }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucun sondage disponible pour le moment.</p>
+    {% endif %}
+    
+    <div class="mt-4">
+        {% if user.is_authenticated and user.username == 'abdo' %}
+            <a href="{% url 'survey_app:survey_create' %}" class="btn btn-primary">Créer un nouveau sondage</a>
+        {% endif %}
+    </div>
+{% endblock %} 

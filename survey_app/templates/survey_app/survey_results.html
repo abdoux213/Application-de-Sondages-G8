@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load survey_extras %}
+
+{% block title %}Résultats - {{ survey.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="mb-4">{{ survey.title }} - Résultats</h1>
+            <p class="lead">{{ survey.description }}</p>
+        </div>
+    </div>
+
+    {% for question in questions %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="mb-0">{{ question.text }}</h3>
+            <small class="text-muted">Type: {{ question.get_question_type_display }}</small>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Réponse</th>
+                            <th>Date</th>
+                            <th>Utilisateur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for response in responses_by_question|get_item:question %}
+                            <tr>
+                                <td>
+                                    {% if question.question_type == 'single_choice' or question.question_type == 'multiple_choice' %}
+                                        {% for choice in response.choice_response.all %}
+                                            {{ choice.text }}{% if not forloop.last %}, {% endif %}
+                                        {% empty %}
+                                            Aucune réponse
+                                        {% endfor %}
+                                    {% elif question.question_type == 'scale' %}
+                                        {{ response.scale_response|default:'Aucune réponse' }}
+                                    {% else %} {# text #}
+                                        {{ response.text_response|default:'Aucune réponse' }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ response.created_at|date:"Y-m-d H:i:s" }}</td>
+                                <td>{{ response.user.username|default:'Anonyme' }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="row mt-4">
+        <div class="col">
+            <a href="{% url 'survey_app:export_results' survey.id %}" class="btn btn-primary">
+                <i class="fas fa-download"></i> Exporter les résultats
+            </a>
+            <a href="{% url 'survey_app:survey_detail' survey.id %}" class="btn btn-secondary">
+                Retour au sondage
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

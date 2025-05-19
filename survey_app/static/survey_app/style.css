@@ -1,0 +1,72 @@
+/* Style pour tous les boutons */
+.btn-primary,
+.btn-success,
+.btn-info {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white !important;
+    border-radius: 0 !important;  /* Pour avoir des coins carrés */
+}
+
+/* Style pour les boutons au survol */
+.btn-primary:hover,
+.btn-success:hover,
+.btn-info:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+}
+
+/* Style pour les boutons secondaires */
+.btn-secondary {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    border-radius: 0 !important;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268 !important;
+    border-color: #545b62 !important;
+}
+
+/* Style pour les boutons de danger */
+.btn-danger {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    border-radius: 0 !important;
+}
+
+.btn-danger:hover {
+    background-color: #c82333 !important;
+    border-color: #bd2130 !important;
+}
+
+/* Style pour les liens de navigation */
+.nav-link {
+    color: white !important;
+    background-color: #28a745 !important;
+    border: 1px solid #28a745 !important;
+    border-radius: 0 !important;
+    margin: 0 5px !important;
+    padding: 8px 15px !important;
+}
+
+.nav-link:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+    color: white !important;
+}
+
+/* Style pour le bouton de déconnexion */
+.nav-link[type="submit"] {
+    background-color: #28a745 !important;
+    border: 1px solid #28a745 !important;
+    color: white !important;
+    cursor: pointer !important;
+    padding: 8px 15px !important;
+    margin: 0 5px !important;
+}
+
+.nav-link[type="submit"]:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+} 

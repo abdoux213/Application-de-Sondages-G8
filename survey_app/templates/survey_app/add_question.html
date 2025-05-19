@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Ajouter une question{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Ajouter une question au sondage "{{ survey.title }}"</h1>
+    
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="{{ form.text.id_for_label }}" class="form-label">Texte de la question</label>
+                    {{ form.text }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.question_type.id_for_label }}" class="form-label">Type de question</label>
+                    {{ form.question_type }}
+                </div>
+                
+                <div class="mb-3">
+                    <div class="form-check">
+                        {{ form.required }}
+                        <label class="form-check-label" for="{{ form.required.id_for_label }}">
+                            Question obligatoire
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.order.id_for_label }}" class="form-label">Ordre</label>
+                    {{ form.order }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Choix possibles</label>
+                    <div id="choices-list">
+                        <div class="input-group mb-2">
+                            <input type="text" name="choices" class="form-control" placeholder="Entrez un choix">
+                        </div>
+                        <div class="input-group mb-2">
+                            <input type="text" name="choices" class="form-control" placeholder="Entrez un choix">
+                        </div>
+                        <div class="input-group mb-2">
+                            <input type="text" name="choices" class="form-control" placeholder="Entrez un choix">
+                        </div>
+                        <div class="input-group mb-2">
+                            <input type="text" name="choices" class="form-control" placeholder="Entrez un choix">
+                        </div>
+                        <div class="input-group mb-2">
+                            <input type="text" name="choices" class="form-control" placeholder="Entrez un choix">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Ajouter la question</button>
+        <a href="{% url 'survey_app:survey_detail' survey.id %}" class="btn btn-secondary">Retour au sondage</a>
+    </form>
+
+    {% if questions %}
+        <div class="mt-5">
+            <h2>Questions existantes</h2>
+            <div class="list-group">
+                {% for question in questions %}
+                    <div class="list-group-item">
+                        <h5 class="mb-1">{{ question.text }}</h5>
+                        <p class="mb-1">Type: {{ question.get_question_type_display }}</p>
+                        {% if question.choices.exists %}
+                            <div class="mt-2">
+                                <strong>Choix possibles:</strong>
+                                <ul class="list-unstyled">
+                                    {% for choice in question.choices.all %}
+                                        <li>{{ choice.text }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %} 
